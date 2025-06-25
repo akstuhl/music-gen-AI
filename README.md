@@ -13,3 +13,33 @@
 `mubertWorkflow.py`: Code for querying and downloading songs from Mubert
 - Need to create more facebook accounts to run multi-account workflows
 - Login is (relatively) slow on purpose just to bypass facebook bot detection
+
+# Environment Variables and dot-env
+
+There are a handful of settings/options throughout the scripts that were previously being hard-coded within each file. I've changed some of these to be set with an environment variable. You can set (and change) each of these options in a few different ways:
+
+- by manually defining a variable in your shell session (e.g. `export CHROME_VERSION=137`)
+- by manually specifying the variable before running each script (e.g. `CHROME_VERSION=137 python3 stableAudioWorkflow.py`)
+- by creating a `.env` file at the root directory and defining each variable on its own line
+
+## Chrome Versioning
+
+undetected-webdriver gets really particular about what version of Chrome is running. You may get an error like this: 
+
+```
+selenium.common.exceptions.SessionNotCreatedException: Message: session not created: cannot connect to chrome at 127.0.0.1:54171
+from session not created: This version of ChromeDriver only supports Chrome version 130
+Current browser version is 137.0.7151.120
+```
+
+You'll need to specify whatever _your_ version of Chrome is (137 in the above example). Set this in a `.env` file in the project root:
+
+```
+CHROME_VERSION=137
+```
+
+Each script will try to read the `CHROME_VERSION` environment variable to determine what version to try and load.
+
+## Setting the number of drivers
+
+Use `MAX_DRIVERS` environment variable to specify the maximum number of chrome browsers to launch at a time. As noted above, some workflows will only work with a few instances running at once

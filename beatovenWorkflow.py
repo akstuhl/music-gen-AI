@@ -20,6 +20,11 @@ import sys
 import threading
 import time
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 # Global event to control the spinner
 stop_spinner = threading.Event()
 
@@ -60,9 +65,11 @@ from pwordProtect import Protection
 
 # Initialize undetected
 NUM_DRIVERS = len(Protection.names)
+
+NUM_DRIVERS = int(os.getenv('MAX_DRIVERS'))
 active_drivers = []
 
-version = 130
+version = int(os.getenv('CHROME_VERSION'))
 
 #driver = uc.Chrome(version_main=version, options=options)
 

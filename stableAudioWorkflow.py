@@ -12,8 +12,12 @@ from pwordProtect import Protection
 import sys
 import threading
 import time
+import os
+from dotenv import load_dotenv
 
-NUM_DRIVERS = 3
+load_dotenv()
+
+NUM_DRIVERS = int(os.getenv('MAX_DRIVERS'))
 
 active_drivers = []
 #version = 132
@@ -22,9 +26,10 @@ for i in range(NUM_DRIVERS):
     account = Protection.sterne_names[i].split('@')[0]
 
     chromeOptions = uc.ChromeOptions()
-    prefs = {"download.default_directory" : f"/Users/clarachen/Documents/Harvard/Radcliffe Research Partners/music-gen-AI/stable_audio/{account}"}
+    prefs = {"download.default_directory" : f"{os.getenv('BASE_OUTPUT_DIRECTORY')}/music-gen-AI/stable_audio/{account}"}
     chromeOptions.add_experimental_option("prefs",prefs)
-
+    chromeOptions.add_argument("--headless=new")
+    chromeOptions.add_argument("--no-sandbox")
     active_drivers.append(uc.Chrome(options=chromeOptions))
     #active_drivers.append(uc.Chrome(version_main=version, options=chromeOptions))
 
@@ -131,7 +136,10 @@ def download():
         download_btn = driver.find_element(By.XPATH, '/html/body/div/main/div[3]/div[2]/div/div[2]/div[2]/div[1]/div/div[3]/button[2]')
         download_btn.click()
 
-        mp3_btn = driver.find_element(By.XPATH, '/html/body/div/div[1]/div/div/div[1]/button')
+        random_sleep(1, 2)
+
+        # mp3_btn = driver.find_element(By.XPATH, '/html/body/div/div[1]/div/div/div[1]/button')
+        mp3_btn = driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div/div/div[1]/button')
         mp3_btn.click()
 
         random_sleep(1, 2)
